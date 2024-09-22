@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Fun Random Facts API Documentation</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    :root {
+      --bg-color: #ffffff;
+      --text-color: #1f2937;
+      --link-color: #1d4ed8;
+      --border-color: #e5e7eb;
+      --code-bg-color: #f3f4f6;
+      --code-text-color: #1f2937;
+      --warning-bg-color: #FEF3C7;
+      --warning-border-color: #F59E0B;
+    }
+    .dark {
+      --bg-color: #0d1117;
+      --text-color: #c9d1d9;
+      --link-color: #58a6ff;
+      --border-color: #30363d;
+      --code-bg-color: #161b22;
+      --code-text-color: #c9d1d9;
+      --warning-bg-color: #161b22;
+      --warning-border-color: #58a6ff;
+    }
+    body {
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      font-family: "Courier New", Arial, sans-serif;
+      font-size: 16px;
+      line-height: 1.5;
+      transition: background-color 0.3s, color 0.3s;
+    }
+    a {
+      color: var(--link-color);
+      transition: color 0.3s;
+    }
+    a:hover {
+      text-decoration: underline;
+    }
+    code, pre {
+      background-color: var(--code-bg-color);
+      color: var(--code-text-color);
+      border-radius: 4px;
+      font-size: 0.95em;
+    }
+    pre {
+      padding: 1em;
+      overflow-x: auto;
+    }
+    .border-b-custom {
+      border-bottom: 1px solid var(--border-color);
+    }
+    .border-custom {
+      border: 1px solid var(--border-color);
+    }
+    .bg-custom {
+      background-color: var(--bg-color);
+    }
+    .warning-box {
+      background-color: var(--warning-bg-color);
+      border-left: 4px solid var(--warning-border-color);
+      padding: 1rem;
+      margin-bottom: 1rem;
+      border-radius: 0.5rem;
+    }
+    /* Added section-divider class */
+    .section-divider {
+      border-top: 1px solid var(--border-color);
+      padding-top: 2rem;
+    }
+  </style>
+</head>
+<body>
+  <!-- Theme Toggle Button -->
+  <button id="theme-toggle" aria-label="Toggle Dark/Light Mode" class="focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors duration-300 p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 fixed top-4 right-4">
+    <!-- Icon will be injected by JavaScript -->
+    <svg id="theme-icon" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-800 dark:text-gray-200" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <!-- Sun Icon (default) -->
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m8.485-8.485h-1M4.515 12.515h-1m15.364 4.95l-.707-.707M6.343 6.343l-.707-.707m12.02 12.02l-.707-.707M6.343 17.657l-.707-.707M12 5a7 7 0 100 14 7 7 0 000-14z" />
+    </svg>
+  </button>
+
+  <div class="max-w-6xl mx-auto bg-custom shadow-md rounded-lg my-8 p-8 border-custom">
+    <h1 class="text-4xl font-bold mb-6 border-b-custom pb-2">Fun Random Facts API</h1>
+
+    <!-- Table of Contents -->
+    <nav class="mb-12">
+      <h2 class="text-2xl font-bold mb-4">Table of Contents</h2>
+      <ul class="list-disc pl-6">
+        <li><a href="#introduction">Introduction</a></li>
+        <li><a href="#base-url">Base URL</a></li>
+        <li><a href="#endpoints">Endpoints</a>
+          <ul class="list-decimal pl-6">
+            <li><a href="#get-facts-random">GET /facts/random</a></li>
+            <li><a href="#get-categories">GET /categories</a></li>
+            <li><a href="#get-facts-random-category">GET /facts/random/&lt;category&gt;</a></li>
+          </ul>
+        </li>
+        <li><a href="#response-structure">Response Structure</a></li>
+        <li><a href="#rate-limits">Rate Limits</a></li>
+        <li><a href="#error-handling">Error Handling</a></li>
+        <li><a href="#legal-disclaimer">Legal Disclaimer</a></li>
+      </ul>
+    </nav>
+
+    <!-- Introduction -->
+    <section id="introduction" class="mb-12">
+      <h2 class="text-2xl font-bold mb-4">Introduction</h2>
+      <p class="mb-4">
+        Welcome to the Fun Random Facts API. This service provides a treasure trove of interesting, quirky, and educational facts for your applications. No authentication required—just pure, unadulterated knowledge at your fingertips!
+      </p>
+    </section>
+
+    <!-- Base URL -->
+    <section id="base-url" class="mb-12 section-divider">
+      <h2 class="text-2xl font-bold mb-4">Base URL</h2>
+      <p class="mb-4">All API requests should be made to:</p>
+      <pre><code>https://cnichols1734.pythonanywhere.com</code></pre>
+    </section>
+
+    <!-- Endpoints -->
+    <section id="endpoints" class="mb-12 section-divider">
+      <h2 class="text-2xl font-bold mb-4">Endpoints</h2>
+
+      <!-- GET /facts/random -->
+      <div id="get-facts-random" class="mb-12">
+        <h3 class="text-xl font-bold mb-2">1. GET <code>/facts/random</code></h3>
+        <p class="mb-2">Returns a random fun fact. Prepare to be amazed!</p>
+
+        <h4 class="text-lg font-bold mb-1">Example Request:</h4>
+        <pre><code>GET https://cnichols1734.pythonanywhere.com/facts/random</code></pre>
+
+        <h4 class="text-lg font-bold mb-1 mt-4">Example Response:</h4>
+        <pre id="random-fact-response"><code>{
+    "id": 42,
+    "fact": "The shortest war in history lasted 38 minutes.",
+    "category": "History",
+    "source": "Historical Records",
+    "date_added": "2024-09-21 03:35:10",
+    "language": "en",
+    "tags": "war, history, shortest",
+    "author": "admin"
+}</code></pre>
+
+        <button onclick="fetchRandomFact()" class="inline-block mt-4 bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700 transition duration-300">Try it out 🎲</button>
+      </div>
+
+      <!-- GET /categories -->
+      <div id="get-categories" class="mb-12 section-divider">
+        <h3 class="text-xl font-bold mb-2">2. GET <code>/categories</code></h3>
+        <p class="mb-2">Retrieves a list of all available categories.</p>
+
+        <h4 class="text-lg font-bold mb-1">Example Request:</h4>
+        <pre><code>GET https://cnichols1734.pythonanywhere.com/categories</code></pre>
+
+        <h4 class="text-lg font-bold mb-1 mt-4">Example Response:</h4>
+        <pre id="categories-response"><code>{
+    "categories": ["Science", "History", "Technology", "Art"]
+}</code></pre>
+
+        <button onclick="fetchCategories()" class="inline-block mt-4 bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700 transition duration-300">Try it out 📚</button>
+      </div>
+
+      <!-- GET /facts/random/<category> -->
+      <div id="get-facts-random-category" class="mb-12 section-divider">
+        <h3 class="text-xl font-bold mb-2">3. GET <code>/facts/random/&lt;category&gt;</code></h3>
+        <p class="mb-2">Returns a random fun fact from a specified category.</p>
+
+        <h4 class="text-lg font-bold mb-1">URL Parameters:</h4>
+        <ul class="list-disc pl-6 mb-2">
+          <li><strong>category</strong> (string): The category from which to retrieve a random fact.</li>
+        </ul>
+
+        <h4 class="text-lg font-bold mb-1">Example Request:</h4>
+        <pre><code>GET https://cnichols1734.pythonanywhere.com/facts/random/Science</code></pre>
+
+        <h4 class="text-lg font-bold mb-1 mt-4">Example Response:</h4>
+        <pre id="category-fact-response"><code>{
+    "id": 85,
+    "fact": "Honey never spoils. Archaeologists have found pots of honey in ancient Egyptian tombs that are over 3,000 years old and still edible.",
+    "category": "Science",
+    "source": "National Geographic",
+    "date_added": "2024-09-21 10:15:30",
+    "language": "en",
+    "tags": "honey, preservation, food",
+    "author": "admin"
+}</code></pre>
+
+        <div class="mt-4">
+          <label for="category-input" class="block text-lg font-bold mb-2">Enter Category:</label>
+          <input type="text" id="category-input" class="border border-gray-300 rounded px-4 py-2 w-full max-w-sm" placeholder="e.g., Science">
+        </div>
+
+        <button onclick="fetchRandomFactByCategory()" class="inline-block mt-4 bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700 transition duration-300">Try it out 🎲</button>
+      </div>
+
+      <div class="warning-box section-divider">
+        <p class="font-semibold">Note: The <code>/facts/random/&lt;category&gt;</code> endpoint is case-sensitive. Make sure to use the correct category name as returned by the <code>/categories</code> endpoint.</p>
+      </div>
+
+      <a href="/pretty-fact" class="inline-block bg-green-600 text-white py-2 px-4 rounded hover:bg-green-700 hover:no-underline transition duration-300 mb-12">Try the Pretty View 🎨</a>
+    </section>
+
+    <!-- Response Structure -->
+    <section id="response-structure" class="mb-12 section-divider">
+      <h2 class="text-2xl font-bold mb-4">Response Structure</h2>
+      <p class="mb-4">The API returns a JSON object with the following structure:</p>
+      <ul class="list-disc pl-6">
+        <li><strong>id</strong> (integer): A unique identifier for the fact.</li>
+        <li><strong>fact</strong> (string): The text of the fun fact.</li>
+        <li><strong>category</strong> (string): The category the fact belongs to.</li>
+        <li><strong>source</strong> (string): The source of the fact.</li>
+        <li><strong>date_added</strong> (string): The date the fact was added to the database.</li>
+        <li><strong>language</strong> (string): The language of the fact (default: "en").</li>
+        <li><strong>tags</strong> (string): Comma-separated tags related to the fact.</li>
+        <li><strong>author</strong> (string): The author or contributor of the fact.</li>
+      </ul>
+    </section>
+
+    <!-- Rate Limits -->
+    <section id="rate-limits" class="mb-12 section-divider">
+      <h2 class="text-2xl font-bold mb-4">Rate Limits</h2>
+      <p class="mb-4">
+        To ensure fair usage and prevent our servers from exploding, the API is limited to <strong>60 requests per minute</strong> per IP address. Exceeding this limit will result in a <strong>429 Too Many Requests</strong> response.
+      </p>
+    </section>
+
+    <!-- Error Handling -->
+    <section id="error-handling" class="mb-12 section-divider">
+      <h2 class="text-2xl font-bold mb-4">Error Handling</h2>
+      <p class="mb-4">The API uses conventional HTTP response codes to indicate success or failure of requests:</p>
+      <ul class="list-disc pl-6">
+        <li><strong>200 - OK:</strong> Request successful.</li>
+        <li><strong>404 - Not Found:</strong> The requested resource was not found. Check the endpoint or parameters.</li>
+        <li><strong>429 - Too Many Requests:</strong> Rate limit exceeded.</li>
+        <li><strong>500 - Internal Server Error:</strong> Something went wrong on our end.</li>
+      </ul>
+    </section>
+
+    <!-- Legal Disclaimer -->
+    <section id="legal-disclaimer" class="mb-12 section-divider">
+      <h2 class="text-2xl font-bold mb-4">Legal Disclaimer</h2>
+      <p class="text-sm mb-4">
+        This API is provided for educational and entertainment purposes only. While we strive for accuracy, we cannot guarantee the absolute truth of every fact. Use the information at your own discretion.
+      </p>
+    </section>
+  </div>
+
+  <footer class="max-w-6xl mx-auto px-4 py-6 text-center text-gray-600 text-sm dark:text-[#8b949e]">
+    <p>&copy; 2024 Fun Random Facts API. All rights reserved (except for the facts, which belong to the universe).</p>
+    <p class="mt-2">Powered by curiosity & Python</p>
+  </footer>
+
+  <!-- External Theme Toggle Script -->
+  <script>
+    const themeToggleBtn = document.getElementById('theme-toggle');
+    const themeIcon = document.getElementById('theme-icon');
+    const body = document.body;
+
+    // SVG Paths for Sun and Moon Icons
+    const sunIcon = `
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-800 dark:text-gray-200" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <!-- Sun Icon -->
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m8.485-8.485h-1M4.515 12.515h-1m15.364 4.95l-.707-.707M6.343 6.343l-.707-.707m12.02 12.02l-.707-.707M6.343 17.657l-.707-.707M12 5a7 7 0 100 14 7 7 0 000-14z" />
+      </svg>
+    `;
+
+    const moonIcon = `
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-800 dark:text-gray-200" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <!-- Moon Icon -->
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12.79A9 9 0 1111.21 3a7 7 0 009.79 9.79z" />
+      </svg>
+    `;
+
+    // Function to update the theme icon based on the current theme
+    function updateThemeIcon() {
+      if (body.classList.contains('dark')) {
+        themeIcon.innerHTML = moonIcon;
+      } else {
+        themeIcon.innerHTML = sunIcon;
+      }
+    }
+
+    // Function to apply the theme based on the saved preference
+    function applySavedTheme() {
+      const savedTheme = localStorage.getItem('theme');
+      if (savedTheme === 'dark') {
+        body.classList.add('dark');
+      } else {
+        body.classList.remove('dark');
+      }
+      updateThemeIcon();
+    }
+
+    applySavedTheme();
+
+    // Event listener for the toggle button
+    themeToggleBtn.addEventListener('click', function() {
+      body.classList.toggle('dark');
+      updateThemeIcon();
+      // Save the current theme to localStorage
+      if (body.classList.contains('dark')) {
+        localStorage.setItem('theme', 'dark');
+      } else {
+        localStorage.setItem('theme', 'light');
+      }
+    });
+
+
+    // Function to fetch a random fact
+    function fetchRandomFact() {
+      const responseContainer = document.getElementById('random-fact-response');
+      fetch('/facts/random')
+        .then(response => {
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
+          return response.json();
+        })
+        .then(data => {
+          responseContainer.textContent = JSON.stringify(data, null, 4);
+        })
+        .catch(error => {
+          responseContainer.textContent = JSON.stringify({ error: `Failed to fetch data: ${error.message}` }, null, 4);
+          console.error('Error fetching random fact:', error);
+        });
+    }
+
+    // Function to fetch all categories
+    function fetchCategories() {
+      const responseContainer = document.getElementById('categories-response');
+      fetch('/categories')
+        .then(response => {
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
+          return response.json();
+        })
+        .then(data => {
+          responseContainer.textContent = JSON.stringify(data, null, 4);
+        })
+        .catch(error => {
+          responseContainer.textContent = JSON.stringify({ error: `Failed to fetch data: ${error.message}` }, null, 4);
+          console.error('Error fetching categories:', error);
+        });
+    }
+
+    // Function to fetch a random fact by category
+    function fetchRandomFactByCategory() {
+      const categoryInput = document.getElementById('category-input').value.trim();
+      const responseContainer = document.getElementById('category-fact-response');
+      if (!categoryInput) {
+        responseContainer.textContent = JSON.stringify({ error: 'Please enter a category.' }, null, 4);
+        return;
+      }
+      const encodedCategory = encodeURIComponent(categoryInput);
+      fetch(`/facts/random/${encodedCategory}`)
+        .then(response => {
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
+          return response.json();
+        })
+        .then(data => {
+          responseContainer.textContent = JSON.stringify(data, null, 4);
+        })
+        .catch(error => {
+          responseContainer.textContent = JSON.stringify({ error: `Failed to fetch data: ${error.message}` }, null, 4);
+          console.error('Error fetching fact by category:', error);
+        });
+    }
+  </script>
+</body>
+</html>

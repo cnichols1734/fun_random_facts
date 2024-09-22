@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Fun Random Facts API - Pretty View</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    :root {
+      --bg-color: #ffffff;
+      --text-color: #1f2937;
+      --link-color: #1d4ed8;
+      --border-color: #e5e7eb;
+    }
+    .dark {
+      --bg-color: #0d1117;
+      --text-color: #c9d1d9;
+      --link-color: #58a6ff;
+      --border-color: #30363d;
+    }
+    body {
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      font-family: "Courier New", Arial, sans-serif;
+      font-size: 16px;
+      line-height: 1.5;
+    }
+    a {
+      color: var(--link-color);
+    }
+    a:hover {
+      text-decoration: underline;
+    }
+    .border-b-custom {
+      border-bottom: 1px solid var(--border-color);
+    }
+    .border-custom {
+      border: 1px solid var(--border-color);
+    }
+    .bg-custom {
+      background-color: var(--bg-color);
+    }
+    .fact-image {
+      width: 300px;
+      height: 200px;
+      border-radius: 10px;
+      object-fit: cover;
+      margin-bottom: 1rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="max-w-2xl mx-auto bg-custom shadow-md rounded-lg my-8 p-8 border-custom">
+    <div class="flex justify-end mb-4">
+      <button id="theme-toggle" aria-label="Toggle Dark/Light Mode" class="focus:outline-none">
+        <!-- Icon will be injected by JavaScript -->
+        <svg id="theme-icon" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-800 dark:text-gray-200" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <!-- Sun Icon (default) -->
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m8.485-8.485h-1M4.515 12.515h-1m15.364 4.95l-.707-.707M6.343 6.343l-.707-.707m12.02 12.02l-.707-.707M6.343 17.657l-.707-.707M12 5a7 7 0 100 14 7 7 0 000-14z" />
+        </svg>
+      </button>
+    </div>
+
+    <h1 class="text-4xl font-bold mb-6 border-b-custom pb-2 text-center">Fun Random Fact</h1>
+
+    <div class="text-center">
+      <img src="https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80" alt="Knowledge" class="fact-image mx-auto">
+      <p id="fact-text" class="text-xl mb-4">Loading fact...</p>
+      <p id="fact-category" class="text-lg mb-2 italic">Category: </p>
+      <p id="fact-source" class="text-sm mb-6">Source: </p>
+      <button id="new-fact" class="bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700 transition duration-300">Get New Fact</button>
+    </div>
+
+    <div class="mt-8 text-center">
+      <a href="/" class="inline-block bg-gray-600 text-white py-2 px-4 rounded hover:bg-gray-700 hover:no-underline transition duration-300">Back to Documentation</a>
+    </div>
+  </div>
+
+  <footer class="max-w-2xl mx-auto px-4 py-6 text-center text-gray-600 text-sm dark:text-[#8b949e]">
+    <p>&copy; 2024 Fun Random Facts API. All rights reserved (except for the facts, which belong to the universe).</p>
+    <p class="mt-2">Powered by curiosity, Python, and countless "Did you know?" moments.</p>
+  </footer>
+
+  <script>
+    // Theme Toggle Functionality with localStorage
+    const themeToggleBtn = document.getElementById('theme-toggle');
+    const themeIcon = document.getElementById('theme-icon');
+    const body = document.body;
+
+    // SVG Paths for Sun and Moon Icons
+    const sunIcon = `
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-800 dark:text-gray-200" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <!-- Sun Icon -->
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m8.485-8.485h-1M4.515 12.515h-1m15.364 4.95l-.707-.707M6.343 6.343l-.707-.707m12.02 12.02l-.707-.707M6.343 17.657l-.707-.707M12 5a7 7 0 100 14 7 7 0 000-14z" />
+      </svg>
+    `;
+
+    const moonIcon = `
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-800 dark:text-gray-200" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <!-- Moon Icon -->
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12.79A9 9 0 1111.21 3a7 7 0 009.79 9.79z" />
+      </svg>
+    `;
+
+    // Function to update the theme icon based on the current theme
+    function updateThemeIcon() {
+      if (body.classList.contains('dark')) {
+        themeIcon.innerHTML = moonIcon;
+      } else {
+        themeIcon.innerHTML = sunIcon;
+      }
+    }
+
+    // Function to apply the theme based on the saved preference
+    function applySavedTheme() {
+      const savedTheme = localStorage.getItem('theme');
+      if (savedTheme === 'dark') {
+        body.classList.add('dark');
+      } else {
+        body.classList.remove('dark');
+      }
+      updateThemeIcon();
+    }
+
+    // Initial theme application on page load
+    applySavedTheme();
+
+    // Event listener for the toggle button
+    themeToggleBtn.addEventListener('click', function() {
+      body.classList.toggle('dark');
+      updateThemeIcon();
+      // Save the current theme to localStorage
+      if (body.classList.contains('dark')) {
+        localStorage.setItem('theme', 'dark');
+      } else {
+        localStorage.setItem('theme', 'light');
+      }
+    });
+
+    // Function to fetch a new random fact
+    function fetchNewFact() {
+      fetch('/facts/random')
+        .then(response => response.json())
+        .then(data => {
+          document.getElementById('fact-text').textContent = data.fact;
+          document.getElementById('fact-category').textContent = `Category: ${data.category}`;
+          document.getElementById('fact-source').textContent = `Source: ${data.source}`;
+        })
+        .catch(error => {
+          console.error('Error fetching fact:', error);
+          document.getElementById('fact-text').textContent = 'Our fact machine is taking a break. Try again later!';
+          document.getElementById('fact-category').textContent = 'Category: Unknown';
+          document.getElementById('fact-source').textContent = 'Source: Unknown';
+        });
+    }
+
+    // Fetch a new fact on page load
+    fetchNewFact();
+
+    // Event listener for the "Get New Fact" button
+    document.getElementById('new-fact').addEventListener('click', fetchNewFact);
+  </script>
+</body>
+</html>
