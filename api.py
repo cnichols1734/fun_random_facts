@@ -12,7 +12,7 @@ app.config['JSON_AS_ASCII'] = False
 # Rate Limiting
 limiter = Limiter(
     key_func=get_remote_address,
-    default_limits=["60 per minute"]
+    default_limits=["120 per minute"]
 )
 limiter.init_app(app)
 
@@ -35,7 +35,7 @@ def pretty_fact():
 
 
 @app.route('/facts/random', methods=['GET'])
-@limiter.limit("60 per minute")
+@limiter.limit("120 per minute")
 def get_random_fact():
     conn = get_db_connection()
     cursor = conn.cursor()
@@ -74,7 +74,7 @@ def get_random_fact():
 
 
 @app.route('/categories', methods=['GET'])
-@limiter.limit("60 per minute")
+@limiter.limit("120 per minute")
 def get_categories():
     conn = get_db_connection()
     cursor = conn.cursor()
@@ -86,7 +86,7 @@ def get_categories():
 
 
 @app.route('/facts/random/<category>', methods=['GET'])
-@limiter.limit("60 per minute")
+@limiter.limit("120 per minute")
 def get_random_fact_by_category(category):
     conn = get_db_connection()
     cursor = conn.cursor()
