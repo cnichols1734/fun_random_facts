@@ -91,14 +91,15 @@ def get_random_fact_by_category(category):
     conn = get_db_connection()
     cursor = conn.cursor()
 
-    cursor.execute('SELECT COUNT(*) FROM fun_facts WHERE category = ?', (category,))
+    # Convert both the category in the database and the user's input to lowercase
+    cursor.execute('SELECT COUNT(*) FROM fun_facts WHERE LOWER(category) = LOWER(?)', (category,))
     total_facts = cursor.fetchone()[0]
 
     if total_facts == 0:
         conn.close()
         return jsonify({'error': f'No facts found in the category "{category}".'}), 404
 
-    cursor.execute('SELECT id FROM fun_facts WHERE category = ?', (category,))
+    cursor.execute('SELECT id FROM fun_facts WHERE LOWER(category) = LOWER(?)', (category,))
     ids = [row['id'] for row in cursor.fetchall()]
 
     random_id = random.choice(ids)
@@ -125,4 +126,3 @@ def get_random_fact_by_category(category):
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=5005)
-
